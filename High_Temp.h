@@ -2,7 +2,7 @@
   High_Temp.h
 
   2014 Copyright (c) Seeed Technology Inc.  All right reserved.
-  
+
   Loovee
   2013-4-14
 
@@ -28,13 +28,13 @@ class HighTemp{
 public:
 
     HighTemp(int _pinTmp, int _pinThmc);
-    
-    float getRoomTmp();                      // 
+
+    float getRoomTmp();
     float getThmc();
 
     void  setAnalogReference(float _ref);
     float getOffset();
-    
+
     void begin();
 
 
@@ -42,7 +42,7 @@ private:
 
     int pinRoomTmp;                         // pin of temperature sensor
     int pinThmc;                            // pin of thermocouple
-    
+
     float adcREF;                           // reference for the adc.
     float tempRoom;                         // room temperature
     float tempThmc;                         // thermocouple temperature

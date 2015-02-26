@@ -49,7 +49,6 @@ HighTemp::HighTemp(int _pinTmp, int _pinThmc)
     pinThmc    = _pinThmc;
     ampOffset  =  VOL_OFFSET;
     adcREF     =  AREF;
-    
 
 }
 
@@ -63,7 +62,7 @@ float HighTemp::getThmc()
     float vol  = getThmcVol();
 
     tempThmc = K_VtoT(vol) + tempRoom;
-    
+
     return tempThmc;
 }
 
@@ -111,7 +110,7 @@ float HighTemp::getThmcVol()                                             // get 
 {
     float vout = (float)getAnalog(pinThmc)/1023.0*adcREF*1000;
     float vin  = (vout - ampOffset)/AMP_AV;
-    return (vin);    
+    return (vin);
 }
 
 
