@@ -47,6 +47,7 @@ HighTemp::HighTemp(int _pinTmp, int _pinThmc)
 
     pinRoomTmp = _pinTmp;
     pinThmc    = _pinThmc;
+    ampOffset  =  VOL_OFFSET;
     adcREF     =  AREF;
     
 
@@ -85,6 +86,17 @@ void HighTemp::setAnalogReference(float _ref)
     adcREF = _ref;
 }
 
+float HighTemp::getOffset()
+{
+    long offset = 0;
+    for (int idx=0; idx < 32; idx++) {
+        offset += getAnalog(pinThmc);
+    }
+    offset >>=5;
+    ampOffset = offset * adcREF * 1000 / 1023;
+    return ampOffset;
+}
+
 float HighTemp::getRoomTmp()
 {
     int a = getAnalog(pinRoomTmp) * adcREF / 3.3;                       // 3.3V supply
@@ -98,7 +110,7 @@ float HighTemp::getRoomTmp()
 float HighTemp::getThmcVol()                                             // get voltage of thmc in mV
 {
     float vout = (float)getAnalog(pinThmc)/1023.0*adcREF*1000;
-    float vin  = (vout - VOL_OFFSET)/AMP_AV;
+    float vin  = (vout - ampOffset)/AMP_AV;
     return (vin);    
 }
 

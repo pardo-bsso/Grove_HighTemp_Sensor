@@ -33,6 +33,7 @@ public:
     float getThmc();
 
     void  setAnalogReference(float _ref);
+    float getOffset();
     
     void begin();
 
@@ -45,6 +46,7 @@ private:
     float adcREF;                           // reference for the adc.
     float tempRoom;                         // room temperature
     float tempThmc;                         // thermocouple temperature
+    float ampOffset;                        // thermocouple amp offset
 
 public:
 
