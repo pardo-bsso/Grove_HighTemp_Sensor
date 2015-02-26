@@ -31,6 +31,8 @@ public:
     
     float getRoomTmp();                      // 
     float getThmc();
+
+    void  setAnalogReference(float _ref);
     
     void begin();
 
@@ -40,6 +42,7 @@ private:
     int pinRoomTmp;                         // pin of temperature sensor
     int pinThmc;                            // pin of thermocouple
     
+    float adcREF;                           // reference for the adc.
     float tempRoom;                         // room temperature
     float tempThmc;                         // thermocouple temperature
 

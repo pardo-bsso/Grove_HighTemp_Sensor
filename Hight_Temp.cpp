@@ -26,7 +26,9 @@
 
 
 const float VOL_OFFSET = 350;                       // offset voltage, mv
+
 const float AMP_AV     = 54.16;                     // Av of amplifier
+const float AREF       = 3.3;                       // Default adc reference
 
 
 const float Var_VtoT_K[3][10] =
@@ -45,6 +47,7 @@ HighTemp::HighTemp(int _pinTmp, int _pinThmc)
 
     pinRoomTmp = _pinTmp;
     pinThmc    = _pinThmc;
+    adcREF     =  AREF;
     
 
 }
@@ -73,13 +76,18 @@ int HighTemp::getAnalog(int pin)
         sum += analogRead(pin);
     }
 
-    return ((sum>>5));                                              // 3.3V supply
+    return ((sum>>5));
 }
 
 
+void HighTemp::setAnalogReference(float _ref)
+{
+    adcREF = _ref;
+}
+
 float HighTemp::getRoomTmp()
 {
-    int a = getAnalog(pinRoomTmp)*50/33;                                // 3.3V supply
+    int a = getAnalog(pinRoomTmp) * adcREF / 3.3;                       // 3.3V supply
     float resistance=(float)(1023-a)*10000/a;                           // get the resistance of the sensor;
     float temperature=1/(log(resistance/10000)/3975+1/298.15)-273.15;   // convert to temperature via datasheet ;
     tempRoom = temperature;
@@ -89,7 +97,7 @@ float HighTemp::getRoomTmp()
 
 float HighTemp::getThmcVol()                                             // get voltage of thmc in mV
 {
-    float vout = (float)getAnalog(pinThmc)/1023.0*5.0*1000;
+    float vout = (float)getAnalog(pinThmc)/1023.0*adcREF*1000;
     float vin  = (vout - VOL_OFFSET)/AMP_AV;
     return (vin);    
 }
