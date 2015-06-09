@@ -25,7 +25,8 @@
 #include "High_Temp.h"
 
 
-const float VOL_OFFSET = 350;                       // offset voltage, mv
+//const float VOL_OFFSET = 350;                       // offset voltage, mv
+const float VOL_OFFSET = 334;                       // offset voltage, mv
 
 const float AMP_AV     = 54.16;                     // Av of amplifier
 const float AREF       = 3.3;                       // Default adc reference
