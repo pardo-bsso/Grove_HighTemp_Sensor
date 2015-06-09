@@ -67,16 +67,17 @@ float HighTemp::getThmc()
 }
 
 
+// 16x oversample instead of plain averaging.
 int HighTemp::getAnalog(int pin)
 {
     long sum = 0;
 
-    for(int i=0; i<32; i++)
+    for(int i=0; i<16; i++)
     {
         sum += analogRead(pin);
     }
 
-    return ((sum>>5));
+    return ((sum>>2));
 }
 
 
@@ -92,14 +93,14 @@ float HighTemp::getOffset()
         offset += getAnalog(pinThmc);
     }
     offset >>=5;
-    ampOffset = offset * adcREF * 1000 / 1023;
+    ampOffset = offset * adcREF * 1000 / 4095;
     return ampOffset;
 }
 
 float HighTemp::getRoomTmp()
 {
     int a = getAnalog(pinRoomTmp) * adcREF / 3.3;                       // 3.3V supply
-    float resistance=(float)(1023-a)*10000/a;                           // get the resistance of the sensor;
+    float resistance=(float)(4095-a)*10000/a;                           // get the resistance of the sensor;
     float temperature=1/(log(resistance/10000)/3975+1/298.15)-273.15;   // convert to temperature via datasheet ;
     tempRoom = temperature;
     return temperature;
@@ -108,7 +109,7 @@ float HighTemp::getRoomTmp()
 
 float HighTemp::getThmcVol()                                             // get voltage of thmc in mV
 {
-    float vout = (float)getAnalog(pinThmc)/1023.0*adcREF*1000;
+    float vout = (float)getAnalog(pinThmc)/4095.0*adcREF*1000;
     float vin  = (vout - ampOffset)/AMP_AV;
     return (vin);
 }
